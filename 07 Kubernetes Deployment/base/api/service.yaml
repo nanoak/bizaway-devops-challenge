@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bizaway-api-service
+  namespace: bizaway
+  labels:
+    app: bizaway-api
+spec:
+  selector:
+    app: bizaway-api
+  ports:
+    - name: http
+      port: 80          # Service port
+      targetPort: 3000  # Container port
+      protocol: TCP
+  type: ClusterIP

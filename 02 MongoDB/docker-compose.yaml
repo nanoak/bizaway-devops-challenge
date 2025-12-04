@@ -1,0 +1,44 @@
+services:
+  mongo:
+    image: mongo:7
+    container_name: BizAwayMongoDB
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: supersecurepassword
+      # Initial DB. The script will create tech_challenge in any case
+      MONGO_INITDB_DATABASE: admin
+    ports:
+      - "27017:27017"
+    volumes:
+      # Persist MongoDB data
+      - mongo-data:/data/db
+      # Initialization script (executed on first run)
+      - ../main/init_scripts/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    healthcheck:
+      test: ["CMD", "mongosh", "admin", "--username", "root", "--password", "supersecurepassword", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+
+  backend:
+    build:
+      # Build context is the project root (one level up)
+      context: ..
+      # Dockerfile path is relative to the build context
+      dockerfile: 01 Dockerfile/Dockerfile
+    image: bizaway/bizawayapi
+    container_name: BizAwayAPI
+    depends_on:
+      mongo:
+        condition: service_healthy
+    environment:
+      # NestJS will read this via ConfigModule (MONGODB_URI)
+      MONGODB_URI: mongodb://root:supersecurepassword@mongo:27017/tech_challenge?authSource=admin
+      NODE_ENV: production
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+volumes:
+  mongo-data:

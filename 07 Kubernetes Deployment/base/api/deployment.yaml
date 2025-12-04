@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bizaway-api
+  namespace: bizaway
+  labels:
+    app: bizaway-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bizaway-api
+  template:
+    metadata:
+      labels:
+        app: bizaway-api
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001   # Must match the UID defined in the Dockerfile (bizuser)
+      containers:
+        - name: bizaway-api
+          image: bizaway/bizawayapi:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: bizaway-api-config
+            - secretRef:
+                name: bizaway-api-secret
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            timeoutSeconds: 2
+            failureThreshold: 3

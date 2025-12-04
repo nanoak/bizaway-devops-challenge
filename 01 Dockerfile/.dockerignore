@@ -1,0 +1,24 @@
+# Local Node_modules
+node_modules
+main/node_modules
+
+# Build artifacts
+dist
+main/dist
+
+# VCS
+.git
+.gitignore
+
+# Tests and coverage
+coverage
+.nyc_output
+
+# Env local files
+.env
+.env.*
+
+# Misc
+Dockerfile
+01 Dockerfile
+*.log

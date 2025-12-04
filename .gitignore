@@ -1,0 +1,36 @@
+# === Node.js ===
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+dist/
+coverage/
+.env
+.env.local
+.env.*.local
+
+# === Logs ===
+logs/
+*.log
+*.log.*
+
+# === OS / IDE files ===
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# === Docker ===
+# Avoid committing build artifacts
+*.pid
+*.seed
+*.pid.lock
+
+# === TypeScript ===
+*.tsbuildinfo
+
+# === Tests ===
+jest-cache/
+jest-results/
+
