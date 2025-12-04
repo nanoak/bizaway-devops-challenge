@@ -15,6 +15,9 @@ All design decisions and detailed explanations are documented in `CHALLENGE_REPO
 ├── .github/workflows/          # GitHub Actions CI pipeline (tests + image build + smoke test)
 ├── 01 Dockerfile/              # Multi-stage Dockerfile for the NestJS application
 ├── 02 MongoDB/                 # Local Docker Compose for API + MongoDB + DB initialization
+├── 03 Local Orchestration
+├── 04 Automation (CI-CD)
+├── 05 Security Fundamentals
 ├── 06 Infrastructure as Code (IaC)/
 │   └── terraform/              # Terraform modules and environments for EKS on AWS
 ├── 07 Kubernetes Deployment/
